@@ -59,16 +59,10 @@ void add() {
     scanf("%lf",&cust[i].phone);
     printf("Enter inital deposit amount: \n");
     scanf("%lf",&cust[i].amt);
-    account_type:
     printf("Select an account type: \n ['sav'] Savings \n ['cur'] Current\n['fx1'] Fixed for a year\n['fx2'] Fixed for 2 years\n['fx3'] Fixed for 3 years");
-    scanf("%s",a_type);
-    if(a_type == 'sav' || a_type == 'cur' || a_type == 'fx1' || a_type == 'fx2' || a_type == 'fx3')
-    {
-      cust[i].acc_type = a_type;
-    } else {
-      printf("Invalid choice! \n");
-      goto account_type;
-    }
+    scanf("%s",cust[i].acc_type);
+
+    //@FIX here and continue
     fprintf(ptr, "%ld\n", cust[i].acc_num);
     fclose(ptr);
     printf("Account created successfully!\n");
@@ -89,8 +83,15 @@ void add() {
 
 
 
-void delete(){} //Delete an account
+void delete(){
 
+} //Delete an account
+
+// void list() {
+//   int flag = 0;
+//   ptr = fopen("record.dat", "r");
+//
+// }
 void update(){} //Edit/Update an account
 
 void check(){} //Check/Validate an existing account
