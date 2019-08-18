@@ -42,7 +42,7 @@ void add() {
     {
         if (test_acc == cust->acc_num)
         {
-            printf("Account no. already in use!\n");
+            printf("Account number already exists!\n");
             goto account_no;
         }
     }
@@ -53,17 +53,20 @@ void add() {
     scanf("%s",cust[i].name);
     printf("Enter customer's date of birth (dd/mm/yyyy):\n");
     scanf("%d/%d/%d", &cust[i].dob.day, &cust[i].dob.month, &cust[i].dob.year);
+    printf("Enter customer's address: \n");
+    scanf("%s",cust[i].address);
     printf("Enter customer's age:\n");
     scanf("%d",&cust[i].age);
     printf("Enter customer's phone number: \n");
     scanf("%lf",&cust[i].phone);
     printf("Enter inital deposit amount: \n");
     scanf("%lf",&cust[i].amt);
-    printf("Select an account type: \n ['sav'] Savings \n ['cur'] Current\n['fx1'] Fixed for a year\n['fx2'] Fixed for 2 years\n['fx3'] Fixed for 3 years");
+    printf("Select an account type: \n ['sav'] Savings \n ['cur'] Current\n['fx1'] Fixed for a year\n['fx2'] Fixed for 2 years\n['fx3'] Fixed for 3 years\n Type your choice: \n");
     scanf("%s",cust[i].acc_type);
 
     //@FIX here and continue
-    fprintf(ptr, "%ld\n", cust[i].acc_num);
+    // add a transaction file to track transactions
+    fprintf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust[i].acc_num, cust[i].name, cust[i].dob.day, cust[i].dob.month, cust[i].dob.year, cust[i].address, cust[i].age, cust[i].phone, cust[i].amt, cust[i].acc_type, cust[i].deposit.day, cust[i].deposit.month, cust[i].deposit.year);
     fclose(ptr);
     printf("Account created successfully!\n");
     add_choice:
@@ -81,17 +84,57 @@ void add() {
   }
 }
 
+// @List Function
+// Formating of output required
+void list() {
+  int flag = 0;
+  ptr = fopen("record.dat", "r");
+  printf("Acc no. Name Address \n");
+  while (fscanf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
+    printf("%ld %s %s", cust->acc_num, cust->name, cust->address);
+    flag++;
+  }
+  fclose(ptr);
+  if(flag == 0) {
+    printf("No records found!");
+  }
+
+//Add a main menu link
+}
 
 
+// @Delete an account
 void delete(){
+  FILE *old, *new;
+  int flag = 0;
+  int a_num;
+  old = fopen("record.dat", "r");
+  new = fopen("new.dat", "w");
+  invalid_record:
+  printf("Enter account to number to be deleted: \n");
+  scanf("%d",&a_num);
 
-} //Delete an account
+  while (fscanf(old, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
 
-// void list() {
-//   int flag = 0;
-//   ptr = fopen("record.dat", "r");
-//
-// }
+      if(cust->acc_num != a_num) {
+        fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+      } else {
+        flag++;
+        printf("Record deleted successfully! \n");
+      }
+  }
+  fclose(old);
+    fclose(new);
+    remove("record.dat");
+    rename("new.dat", "record.dat");
+    if (flag == 0) {
+      printf("No such record found! \n");
+
+      //Add a main menu link
+    }
+}
+
+
 void update(){} //Edit/Update an account
 
 void check(){} //Check/Validate an existing account
@@ -116,6 +159,8 @@ int main(void) {
 // int test = sizeof(cust);
 // printf("%d",test);
 test();
-add();
+// add();
+// list();
+delete();
 return 0;
 }
