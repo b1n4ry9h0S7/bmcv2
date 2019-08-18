@@ -31,13 +31,14 @@ void test() //test
 void add() {
   long test_acc;
   int choice;
+  char a_type[100];
 
   ptr = fopen("record.dat", "a+");
   while(i<100) {
     account_no:
     printf("Enter account number: \n");
     scanf("%ld",&test_acc);
-    while (fscanf(ptr, "%ld\n", &cust->acc_num) != EOF)
+    while(fscanf(ptr, "%ld\n", &cust->acc_num) != EOF)
     {
         if (test_acc == cust->acc_num)
         {
@@ -47,17 +48,41 @@ void add() {
     }
     cust[i].acc_num = test_acc;
     printf("Enter today's date (dd/mm/yy):\n");
-    scanf("%d/%d/%d", &cust[i].deposit.day, &.cust[i].deposit.month, cust[i].deposit.year);
+    scanf("%d/%d/%d", &cust[i].deposit.day, &cust[i].deposit.month, &cust[i].deposit.year);
+    printf("Enter customer's Name:\n");
+    scanf("%s",cust[i].name);
+    printf("Enter customer's date of birth (dd/mm/yyyy):\n");
+    scanf("%d/%d/%d", &cust[i].dob.day, &cust[i].dob.month, &cust[i].dob.year);
+    printf("Enter customer's age:\n");
+    scanf("%d",&cust[i].age);
+    printf("Enter customer's phone number: \n");
+    scanf("%lf",&cust[i].phone);
+    printf("Enter inital deposit amount: \n");
+    scanf("%lf",&cust[i].amt);
+    account_type:
+    printf("Select an account type: \n ['sav'] Savings \n ['cur'] Current\n['fx1'] Fixed for a year\n['fx2'] Fixed for 2 years\n['fx3'] Fixed for 3 years");
+    scanf("%s",a_type);
+    if(a_type == 'sav' || a_type == 'cur' || a_type == 'fx1' || a_type == 'fx2' || a_type == 'fx3')
+    {
+      cust[i].acc_type = a_type;
+    } else {
+      printf("Invalid choice! \n");
+      goto account_type;
+    }
     fprintf(ptr, "%ld\n", cust[i].acc_num);
     fclose(ptr);
     printf("Account created successfully!\n");
+    add_choice:
     printf("Do you want to add another account? \n[1] Yes\n[2] No\nEnter your choice:\n");
     scanf("%d",&choice);
     if(choice == 1){
       i++;
+    }else if(choice == 2) {
+      break;
     }
     else {
-      break;
+      printf("Invalid choice!\n");
+      goto add_choice;
     }
   }
 }
