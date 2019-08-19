@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 // @Variable declations
 struct date {
@@ -26,17 +27,31 @@ void test() //test
 {
   printf("Hello World \n");
 }
+void clear() {
+  system("clear");
+}
+void close(){
+  exit(0);
+}
+void login(){
+  clear();
+  menu();
+} //For Login operations
+
+void logout(){
+  clear();
+  main();
+} // For logging out
 
 // @Add an account
 void add() {
-  int count = 0;
+  // int count = 0;
   long test_acc;
   // int choice;
   char a_type[100];
-
   ptr = fopen("record.dat", "a+");
   while(i<=100) {
-    printf("%d",i);
+    // printf("%d",i);
     account_no:
     printf("Enter account number: \n");
     scanf("%ld",&test_acc);
@@ -63,15 +78,12 @@ void add() {
     scanf("%lf",&cust[i].phone);
     printf("Enter inital deposit amount: \n");
     scanf("%lf",&cust[i].amt);
-    printf("Select an account type: \n ['sav'] Savings \n ['cur'] Current\n['fx1'] Fixed for a year\n['fx2'] Fixed for 2 years\n['fx3'] Fixed for 3 years\n Type your choice: \n");
+    printf("Select an account type: \n['sav'] Savings \n['cur'] Current\n['fx1'] Fixed for a year\n['fx2'] Fixed for 2 years\n['fx3'] Fixed for 3 years\n Type your choice: \n");
     scanf("%s",cust[i].acc_type);
-
-    //@FIX here and continue
     // add a transaction file to track transactions
     fprintf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust[i].acc_num, cust[i].name, cust[i].dob.day, cust[i].dob.month, cust[i].dob.year, cust[i].address, cust[i].age, cust[i].phone, cust[i].amt, cust[i].acc_type, cust[i].deposit.day, cust[i].deposit.month, cust[i].deposit.year);
-    // printf("%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust[i].acc_num, cust[i].name, cust[i].dob.day, cust[i].dob.month, cust[i].dob.year, cust[i].address, cust[i].age, cust[i].phone, cust[i].amt, cust[i].acc_type, cust[i].deposit.day, cust[i].deposit.month, cust[i].deposit.year);
     printf("Account created successfully!\n");
-    count++;
+    // count++;
     add_choice:
     printf("Do you want to add another account? \n[1] Yes\n[2] No\nEnter your choice:\n");
     scanf("%d",&choice);
@@ -79,7 +91,18 @@ void add() {
       i++;
     }else if(choice == 2) {
       fclose(ptr);
-      break;
+      system_1:
+      printf("Do you want to continue to:\n[1] Main menu\n[2] Logout", );
+      printf("%d\n",&choice);
+      switch (choice) {
+        case 1:
+          menu();
+        case 2:
+          logout();
+        default:
+          printf("Invalid choice!\n");
+          goto system_1;
+      }
     }
     else {
       printf("Invalid choice!\n");
@@ -93,9 +116,9 @@ void add() {
 void list() {
   // int flag = 0;
   ptr = fopen("record.dat", "r");
-  printf("Acc no. \t Name \t\t Address \n");
+  printf("Acc no. \t Name\n");
   while (fscanf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
-    printf("%ld \t\t %s \t\t %s \n", cust->acc_num, cust->name, cust->address);
+    printf("%ld \t\t %s\n", cust->acc_num, cust->name);
     flag++;
   }
   fclose(ptr);
@@ -133,7 +156,19 @@ void delete(){
     rename("new.dat", "record.dat");
     if (flag == 0) {
       printf("No such record found! \n");
-
+      system_1:
+      printf("Do you want to continue to:\n[1] Main menu\n[2] Logout", );
+      printf("%d\n",&choice);
+      switch (choice) {
+        case 1:
+          menu();
+        case 2:
+          logout();
+        default:
+          printf("Invalid choice!\n");
+          goto system_1;
+      }
+    }
       //Add a main menu link
     }
 }
@@ -172,7 +207,19 @@ void update(){
         rename("new.dat", "record.dat");
         if (flag == 0) {
           printf("No such record! \n");
-
+          system_1:
+          printf("Do you want to continue to:\n[1] Main menu\n[2] Logout", );
+          printf("%d\n",&choice);
+          switch (choice) {
+            case 1:
+              menu();
+            case 2:
+              logout();
+            default:
+              printf("Invalid choice!\n");
+              goto system_1;
+          }
+        }
           // Add a main menu link
         }
       }
@@ -181,7 +228,6 @@ void update(){
 
 } //Edit/Update an account
 
-void check(){} //Check/Validate an existing account
 // @Transact money from an account
 void transact(){
   int a_num;
@@ -229,15 +275,150 @@ void transact(){
   rename("new.dat", "record.dat");
   if (flag != 1) {
     printf("No such record!\n");
-
+    system_1:
+    printf("Do you want to continue to:\n[1] Main menu\n[2] Logout", );
+    printf("%d\n",&choice);
+    switch (choice) {
+      case 1:
+        menu();
+      case 2:
+        logout();
+      default:
+        printf("Invalid choice!\n");
+        goto system_1;
+    }
+  }
     // add menu link
   }
 }
 
-void menu() {}
-void login(){} //For Login operations
+//Check/Validate an existing account
+void check(){
+int rate,a_num;
+float time,inrst;
+string a_name;
+ptr = fopen("record.dat", "r");
+choice_2:
+printf("Select an option to check customer info:\n[1] Account number\n[2] Name\nEnter your choice:\n");
+scanf("%d",&choice);
+if (choice == 1) {
+  printf("Enter account number:\n");
+  scanf("%d",&a_num);
+  while (fscanf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
+      if (cust->acc_num == a_num) {
+        flag = 1;
+        printf("Account number: %d\nName: %s\nDate of birth: %d/%d/%d \nAge: %d \nAddress %s \nPhone number: %lf \n Account Type: %s \n Current Balance: %lf \n Created on: %d/%d/%d \n",cust->acc_num,cust->name,cust->dob.day,cust->dob.month,cust->dob.year,cust->age,cust->address,cust->phone,cust->acc_type,cust->amt,cust->depsoit.day,cust->deposit.month,cust->deposit.year);
+        if (strcmp(cust->acc_type,"fx1") == 0) {
+          time = 1.0;
+          rate = 9;
+          inrst = interest(time,cust->amt,rate);
+          printf("Rs. %.2f as interest will be added on %d/%d/%d \n", intrst,cust->deposit.day,cust->deposit.month,cust->deposit.year+1);
+        } else if (strcmp(cust->acc_type,"fx2") == 0) {
+          time = 2.0;
+          rate = 11;
+          inrst = interest(time,cust->amt,rate);
+          printf("Rs. %.2f as interest will be added on %d/%d/%d \n", intrst,cust->deposit.day,cust->deposit.month,cust->deposit.year+2);
+        } else if (strcmp(cust->acc_type,"fx3") == 0) {
+          time = 3.0;
+          rate = 13;
+          inrst = interest(time,cust->amt,rate);
+          printf("Rs. %.2f as interest will be added on %d/%d/%d \n", intrst,cust->deposit.day,cust->deposit.month,cust->deposit.year+3);
+        } else if (strcmp(cust->acc_type,"sav") == 0) {
+          time = (1.0 / 12.0);
+          rate = 8;
+          printf("Rs. %.2f as interest will be added on %d of every month.\n", intrst,cust->deposit.day);
+        } else {
+          printf("Current accounts don't get interests!");
+        }
+  } else if (choice == 2) {
+    printf("Enter customer name:\n");
+    scanf("%s",&a_name);
+    while (fscanf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
 
-void logout(){} // For logging out
+        if (cust->name == name) {
+          flag = 1;
+          printf("Account number: %d\nName: %s\nDate of birth: %d/%d/%d \nAge: %d \nAddress %s \nPhone number: %lf \n Account Type: %s \n Current Balance: %lf \n Created on: %d/%d/%d \n",cust->acc_num,cust->name,cust->dob.day,cust->dob.month,cust->dob.year,cust->age,cust->address,cust->phone,cust->acc_type,cust->amt,cust->depsoit.day,cust->deposit.month,cust->deposit.year);
+          if (strcmp(cust->acc_type,"fx1") == 0) {
+            time = 1.0;
+            rate = 9;
+            inrst = interest(time,cust->amt,rate);
+            printf("Rs. %.2f as interest will be added on %d/%d/%d \n", intrst,cust->deposit.day,cust->deposit.month,cust->deposit.year+1);
+          } else if (strcmp(cust->acc_type,"fx2") == 0) {
+            time = 2.0;
+            rate = 11;
+            inrst = interest(time,cust->amt,rate);
+            printf("Rs. %.2f as interest will be added on %d/%d/%d \n", intrst,cust->deposit.day,cust->deposit.month,cust->deposit.year+2);
+          } else if (strcmp(cust->acc_type,"fx3") == 0) {
+            time = 3.0;
+            rate = 13;
+            inrst = interest(time,cust->amt,rate);
+            printf("Rs. %.2f as interest will be added on %d/%d/%d \n", intrst,cust->deposit.day,cust->deposit.month,cust->deposit.year+3);
+          } else if (strcmp(cust->acc_type,"sav") == 0) {
+            time = (1.0 / 12.0);
+            rate = 8;
+            printf("Rs. %.2f as interest will be added on %d of every month.\n", intrst,cust->deposit.day);
+          } else {
+            printf("Current accounts don't get interests!");
+          }
+        }
+      }
+  } else {
+    printf("Invalid choice!\n");
+    goto choice_2;
+
+  }
+}
+    fclose(ptr);
+    if (flag != 1) {
+      printf("No such record!\n");
+      system_1:
+      printf("Do you want to continue to:\n[1] Main menu\n[2] Logout", );
+      printf("%d\n",&choice);
+      switch (choice) {
+        case 1:
+          menu();
+        case 2:
+          logout();
+        default:
+          printf("Invalid choice!\n");
+          goto system_1;
+      }
+    }
+    }
+}
+
+void menu() {
+  choice_3:
+  printf("[1] Open an account\n[2] Update an account\n[3] Make a transaction\n[4] Check an account\n[5] Delete an account\n[6] Customer list\n[7] Exit\n");
+  scanf("%d\n",@choice);
+  switch (choice) {
+    case 1:
+      add();
+      break;
+    case 2:
+      update();
+      break;
+    case 3:
+      transact();
+      break;
+    case 4:
+      check();
+      break;
+    case 5:
+      delete();
+      break;
+    case 6:
+      list();
+      break;
+    case 7:
+      logout();
+    default:
+      printf("Invalid choice!\n");
+      // break;
+      goto choice_3;
+  }
+
+}
 
 float interest(float t, float amount, int rate)
 {
@@ -252,11 +433,37 @@ int main(void) {
 // test();
 // int test = sizeof(cust);
 // printf("%d",test);
-test();
+// test();
 // add();
 // list();
 // delete();
 // update();
 // transact();
+// check();
+string pass, pin_num = "1337";
+int i = 0;
+try:
+clear();
+printf("Login");
+printf("Enter the system pin:\n");
+scanf("%s\n",pass);
+if (strcmp(pass,pin_num)== 0) {
+  clear();
+  menu();
+} else {
+  printf("Wrong password!\n");
+  choice_4:
+  printf("Would you like to try again? \n[1] Yes\n[2] No\nEnter your choice:\n");
+  scanf("\n",&choice);
+  if (choice == 1) {
+    goto try;
+  } else if(choice == 2) {
+      close();
+  } else {
+    printf("Invalid choice!");
+    goto choice_4;
+  }
+}
+
 return 0;
 }
