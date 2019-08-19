@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <string.h>
 // @Variable declations
 struct date {
   int day, month, year;
@@ -69,7 +69,7 @@ void add() {
     //@FIX here and continue
     // add a transaction file to track transactions
     fprintf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust[i].acc_num, cust[i].name, cust[i].dob.day, cust[i].dob.month, cust[i].dob.year, cust[i].address, cust[i].age, cust[i].phone, cust[i].amt, cust[i].acc_type, cust[i].deposit.day, cust[i].deposit.month, cust[i].deposit.year);
-    printf("%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust[i].acc_num, cust[i].name, cust[i].dob.day, cust[i].dob.month, cust[i].dob.year, cust[i].address, cust[i].age, cust[i].phone, cust[i].amt, cust[i].acc_type, cust[i].deposit.day, cust[i].deposit.month, cust[i].deposit.year);
+    // printf("%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust[i].acc_num, cust[i].name, cust[i].dob.day, cust[i].dob.month, cust[i].dob.year, cust[i].address, cust[i].age, cust[i].phone, cust[i].amt, cust[i].acc_type, cust[i].deposit.day, cust[i].deposit.month, cust[i].deposit.year);
     printf("Account created successfully!\n");
     count++;
     add_choice:
@@ -93,9 +93,9 @@ void add() {
 void list() {
   // int flag = 0;
   ptr = fopen("record.dat", "r");
-  printf("Acc no. Name Address \n");
+  printf("Acc no. \t Name \t\t Address \n");
   while (fscanf(ptr, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
-    printf("%ld %s %s", cust->acc_num, cust->name, cust->address);
+    printf("%ld \t\t %s \t\t %s \n", cust->acc_num, cust->name, cust->address);
     flag++;
   }
   fclose(ptr);
@@ -121,7 +121,7 @@ void delete(){
   while (fscanf(old, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
 
       if(cust->acc_num != a_num) {
-        fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+        fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
       } else {
         flag++;
         printf("Record deleted successfully! \n");
@@ -156,15 +156,15 @@ void update(){
         if(choice==1) {
             printf("Enter new address: \n");
             scanf("%s",new_address);
-            fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, new_address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+            fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, new_address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
             printf("Changes saved! \n");
         } else if(choice == 2) {
           printf("Enter new phone number: \n");
           scanf("%lf",&new_phone);
-          fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, new_address, cust->age, new_phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+          fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, new_address, cust->age, new_phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
           printf("Changes saved! \n");
         } else {
-          fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+          fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
         }
         fclose(old);
         fclose(new);
@@ -182,11 +182,59 @@ void update(){
 } //Edit/Update an account
 
 void check(){} //Check/Validate an existing account
-
+// @Transact money from an account
 void transact(){
-  
-} //Transact money from an account
+  int a_num;
+  float d_amt,w_amt;
+  old = fopen("record.dat", "r");
+  new = fopen("new.dat", "w");
+  printf("Enter account number: \n");
+  scanf("%d",&a_num);
+  while (fscanf(old, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d", &cust->acc_num, cust->name, &cust->dob.day, &cust->dob.month, &cust->dob.year, cust->address, &cust->age, &cust->phone, &cust->amt, cust->acc_type, &cust->deposit.day, &cust->deposit.month, &cust->deposit.year)!=EOF) {
 
+    if(cust->acc_num == a_num) {
+      flag = 1;
+      if (strcmp(cust->acc_type,"fx1") == 0 || strcmp(cust->acc_type,"fx2") == 0 || strcmp(cust->acc_type,"fx3") == 0) {
+        printf("You cannot withdraw or deposit cash in fixed accounts!\n");
+
+        // add menu link
+      } else {
+        choice_1:
+        printf("Do you want to\n[1] Deposit\n[2] Withdraw\nEnter your choice:\n" );
+        scanf("%d",&choice);
+        if(choice == 1) {
+          printf("Enter amount to deposit:\n");
+          scanf("%f",&d_amt);
+          cust->amt += d_amt;
+          fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+          printf("Deposited successfully!\n" );
+        } else if(choice == 2) {
+          printf("Enter amount to withdraw:\n");
+          scanf("%f",&w_amt);
+          cust->amt -= w_amt;
+          fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+          printf("withdrawn successfully!\n");
+        } else {
+          printf("Invalid choice\n");
+          goto choice_1;
+        }
+      }
+    } else {
+      fprintf(new, "%ld %s %d/%d/%d %s %d %lf %lf %s %d/%d/%d \n", cust->acc_num, cust->name, cust->dob.day, cust->dob.month, cust->dob.year, cust->address, cust->age, cust->phone, cust->amt, cust->acc_type, cust->deposit.day, cust->deposit.month, cust->deposit.year);
+    }
+  }
+  fclose(old);
+  fclose(new);
+  remove("record.dat");
+  rename("new.dat", "record.dat");
+  if (flag != 1) {
+    printf("No such record!\n");
+
+    // add menu link
+  }
+}
+
+void menu() {}
 void login(){} //For Login operations
 
 void logout(){} // For logging out
@@ -205,9 +253,10 @@ int main(void) {
 // int test = sizeof(cust);
 // printf("%d",test);
 test();
-add();
+// add();
 // list();
 // delete();
 // update();
+// transact();
 return 0;
 }
